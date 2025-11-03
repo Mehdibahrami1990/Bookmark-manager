@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Bookmark } from './bookmark.model';
 import { v4 as uuid } from 'uuid';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
+import { GetBookMarkDto } from './dto/get-bookmark-dto';
 
 @Injectable()
 export class BookmarksService {
@@ -19,6 +20,23 @@ export class BookmarksService {
   findAll(): Bookmark[] {
     return this.bookmarks;
   }
+  find(getBookMarkDto: GetBookMarkDto): Bookmark[] {
+    let bookmarks = this.findAll();
+    const { url, description } = getBookMarkDto;
+
+    if (url) {
+      bookmarks = bookmarks.filter((bookmark) =>
+        bookmark.url.toLowerCase().includes(url),
+      );
+    }
+    if (description) {
+      bookmarks = bookmarks.filter((bookmark) =>
+        bookmark.description.toLowerCase().includes(description),
+      );
+    }
+    return bookmarks;
+  }
+
   findById(id: string): Bookmark | undefined {
     return this.bookmarks.find((bookmark) => bookmark.id == id);
   }
@@ -32,6 +50,18 @@ export class BookmarksService {
       description,
     };
     this.bookmarks.push(bookmark);
+    return bookmark;
+  }
+  deleteBokmark(id: string): void {
+    this.bookmarks = this.bookmarks.filter((bookmark) => bookmark.id !== id);
+  }
+  updateBookMarkDescription(
+    id: string,
+    description: string,
+  ): Bookmark | undefined {
+    const bookmark = this.findById(id);
+    // if (!bookmark) return undefined;
+    bookmark!.description = description;
     return bookmark;
   }
 }

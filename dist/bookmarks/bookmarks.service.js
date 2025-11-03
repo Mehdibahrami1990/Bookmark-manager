@@ -21,6 +21,17 @@ let BookmarksService = class BookmarksService {
     findAll() {
         return this.bookmarks;
     }
+    find(getBookMarkDto) {
+        let bookmarks = this.findAll();
+        const { url, description } = getBookMarkDto;
+        if (url) {
+            bookmarks = bookmarks.filter((bookmark) => bookmark.url.toLowerCase().includes(url));
+        }
+        if (description) {
+            bookmarks = bookmarks.filter((bookmark) => bookmark.description.toLowerCase().includes(description));
+        }
+        return bookmarks;
+    }
     findById(id) {
         return this.bookmarks.find((bookmark) => bookmark.id == id);
     }
@@ -32,6 +43,14 @@ let BookmarksService = class BookmarksService {
             description,
         };
         this.bookmarks.push(bookmark);
+        return bookmark;
+    }
+    deleteBokmark(id) {
+        this.bookmarks = this.bookmarks.filter((bookmark) => bookmark.id !== id);
+    }
+    updateBookMarkDescription(id, description) {
+        const bookmark = this.findById(id);
+        bookmark.description = description;
         return bookmark;
     }
 };
