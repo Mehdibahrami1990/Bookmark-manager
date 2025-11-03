@@ -21,7 +21,11 @@ let BookmarksService = class BookmarksService {
     findAll() {
         return this.bookmarks;
     }
-    createBookmark(url, description) {
+    findById(id) {
+        return this.bookmarks.find((bookmark) => bookmark.id == id);
+    }
+    createBookmark(createBookmarkDto) {
+        const { url, description } = createBookmarkDto;
         const bookmark = {
             id: (0, uuid_1.v4)(),
             url,
