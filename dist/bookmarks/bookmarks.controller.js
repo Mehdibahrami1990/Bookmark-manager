@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookmarksController = void 0;
 const common_1 = require("@nestjs/common");
 const bookmarks_service_1 = require("./bookmarks.service");
+const create_bookmark_dto_1 = require("./dto/create-bookmark.dto");
 let BookmarksController = class BookmarksController {
     bookmarksService;
     constructor(bookmarksService) {
@@ -23,8 +24,11 @@ let BookmarksController = class BookmarksController {
     findAll() {
         return this.bookmarksService.findAll();
     }
-    createBookmark(url, description) {
-        return this.bookmarksService.createBookmark(url, description);
+    findById(id) {
+        return this.bookmarksService.findById(id);
+    }
+    createBookmark(createBookmarkDto) {
+        return this.bookmarksService.createBookmark(createBookmarkDto);
     }
 };
 exports.BookmarksController = BookmarksController;
@@ -35,11 +39,17 @@ __decorate([
     __metadata("design:returntype", Array)
 ], BookmarksController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)('url')),
-    __param(1, (0, common_1.Body)('description')),
+    (0, common_1.Get)('/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Object)
+], BookmarksController.prototype, "findById", null);
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_bookmark_dto_1.CreateBookmarkDto]),
     __metadata("design:returntype", Object)
 ], BookmarksController.prototype, "createBookmark", null);
 exports.BookmarksController = BookmarksController = __decorate([
